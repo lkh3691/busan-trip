@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dwarf in Busan 정산</title>
 <meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dwarf Busan">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1D1D1F">
 <style>
 :root{
   --bg:#FFFFFF; --tile:#F5F5F7; --raised:#FFFFFF; --field:#F5F5F7; --ink:#1D1D1F; --ink-2:#86868B; --line:#E5E5EA;
@@ -50,13 +58,13 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:3px solid var(--accent-soft);outline-offset:1px;box-shadow:0 0 0 1px var(--accent);border-radius:12px}
 
 .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 140px}
-.gnb{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);color:#F5F5F7}
+.gnb{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);color:rgba(255,255,255,.8)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
 .gnb-in{max-width:1080px;margin:0 auto;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand-logo{height:26px;width:auto;flex:none;display:block}
+.brand-logo{height:26px;width:auto;flex:none;display:block;opacity:.8}
 .gnb-title{margin:0;font-size:19px;font-weight:600;letter-spacing:-.022em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.gnb .icon-btn{background:transparent;color:#F5F5F7;height:34px;min-width:34px;font-size:13.5px}
+.gnb .icon-btn{background:transparent;color:rgba(255,255,255,.8);height:34px;min-width:34px;font-size:13.5px}
 .gnb .icon-btn:hover{background:rgba(255,255,255,.14)}
 .trip-sub{color:var(--ink-2);margin:0 0 24px;font-size:15px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
 .trip-sub .who{color:var(--ink);font-weight:500}

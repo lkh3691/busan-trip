@@ -1,0 +1,12 @@
+{
+  "name": "Dwarf in Busan 정산",
+  "short_name": "Dwarf Busan",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#1D1D1F",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
