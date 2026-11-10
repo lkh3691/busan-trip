@@ -7,6 +7,11 @@
 <meta name="robots" content="noindex">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" type="image/png" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dwarf Busan">
+<meta name="theme-color" content="#1D1D1F">
 
 <style>
 :root{
@@ -53,6 +58,8 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 
 .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 140px}
 .gnb{position:sticky;top:0;padding-top:env(safe-area-inset-top,0px);z-index:30;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);color:rgba(255,255,255,.8)}
+/* 홈 화면 앱: iOS가 맨 위 가장자리를 흐리게 처리해서, 로고·글자를 흐림 영역 아래로 내림 */
+@media (display-mode: standalone){ .gnb{padding-top:calc(env(safe-area-inset-top,0px) + 36px)} }
 .gnb-in{max-width:1080px;margin:0 auto;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{height:26px;width:auto;flex:none;display:block;opacity:.8}
@@ -172,10 +179,32 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .fab svg{width:18px;height:18px}
 .fab[hidden]{display:none}
 
-.notice{background:var(--tile);color:var(--ink);font-size:14px;line-height:1.5;text-align:center;padding:14px 20px}
+/* ---------- 리본 (내비게이션 바 아래 안내 배너) ---------- */
+:root{
+  --ribbon-intro-bg:#0071E3;   /* 처음 내려올 때 배경 */
+  --ribbon-intro-fg:#F5F5F7;   /* 처음 글씨 */
+  --ribbon-intro-link:#F5F5F7; /* 처음 링크 */
+  --ribbon-bg:#F5F5F7;         /* 최종 배경 */
+  --ribbon-fg:#1D1D1F;         /* 최종 글씨 */
+  --ribbon-link:#0066CC;       /* 최종 링크 */
+  --ribbon-drop-duration:.8s;
+  --ribbon-tone-delay:1.8s;
+  --ribbon-tone-duration:1s;
+}
+@property --ribbon-link-now{syntax:"<color>";inherits:true;initial-value:#0066CC}
+#notice{position:relative;z-index:1;width:100%;background-color:var(--ribbon-bg);color:var(--ribbon-fg);--ribbon-link-now:var(--ribbon-link)}
+#notice:empty{display:none}
+#notice.show{animation:ribbon-drop var(--ribbon-drop-duration) ease-in-out both,ribbon-tone var(--ribbon-tone-duration) ease-in-out var(--ribbon-tone-delay) both}
+@keyframes ribbon-drop{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes ribbon-tone{
+  from{background-color:var(--ribbon-intro-bg);color:var(--ribbon-intro-fg);--ribbon-link-now:var(--ribbon-intro-link)}
+  to{background-color:var(--ribbon-bg);color:var(--ribbon-fg);--ribbon-link-now:var(--ribbon-link)}
+}
+@media (prefers-reduced-motion:reduce){ #notice.show{animation:none} }
+.notice{background:transparent;color:inherit;font-size:14px;line-height:1.5;text-align:center;padding:16px 20px}
 .notice p{max-width:760px;margin:0 auto}
-.notice+.notice{border-top:1px solid var(--line)}
-.notice-link{border:0;background:none;padding:0;color:var(--accent);font-size:inherit;white-space:nowrap}
+.notice+.notice{border-top:1px solid rgba(128,128,128,.25)}
+.notice-link{border:0;background:none;padding:0;color:var(--ribbon-link-now);font-size:inherit;white-space:nowrap}
 .notice-link:hover{text-decoration:underline}
 
 /* sheet */
@@ -437,6 +466,7 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
     if (state.mode === "local") n += `<div class="notice"><p>아직 Firebase가 연결되지 않아서, 입력한 내용은 이 기기 브라우저에만 저장돼요. config.js를 채우면 친구와 함께 쓸 수 있어요.</p></div>`;
     if (s.missing) n += `<div class="notice"><p>금액이 비어 있는 지출이 ${s.missing}건 있어요. 채워 넣어야 정산이 맞아요. <button type="button" class="notice-link" id="fixMissing">지금 입력하기 ›</button></p></div>`;
     $("notice").innerHTML = n;
+    if (n) $("notice").classList.add("show");
     const fm = $("fixMissing");
     if (fm) fm.onclick = () => { const e = state.expenses.find(x => x.kind !== "transfer" && finalOf(x) == null); if (e && state.canWrite) openSheet(e); };
 
