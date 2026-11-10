@@ -202,7 +202,9 @@ dialog::backdrop{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);ba
 @media (min-width:640px){ .sheet{bottom:50%;transform:translateY(50%);border-radius:22px;max-height:88%;padding-top:24px} .grab{display:none} }
 @media (prefers-reduced-motion:no-preference){ dialog[open] .sheet{animation:up .28s cubic-bezier(.2,.8,.2,1)} }
 @keyframes up{from{translate:0 28px;opacity:.5}to{translate:0 0;opacity:1}}
-.grab{width:36px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.grab{position:relative;height:24px;margin:-10px -22px 6px;cursor:grab;touch-action:none}
+.grab::before{content:"";position:absolute;left:50%;top:9px;width:36px;height:5px;margin-left:-18px;border-radius:3px;background:var(--line)}
+.sheet h2{touch-action:none}
 .sheet h2:focus,.sheet h2:focus-visible{outline:none;box-shadow:none}
 .sheet h2{font-size:26px;margin:0 0 22px}
 .field{margin-bottom:18px}
@@ -811,6 +813,48 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
     await saveFile(new Blob([buf]), `${state.settings.title} 정산 ${todayStr()}.xlsx`);
   }
   $("exportBtn").onclick = exportXlsx;
+
+  /* ---------- 시트 끌어내려 닫기 ---------- */
+  function enableSheetDrag(dlg) {
+    const panel = dlg.querySelector(".sheet");
+    const zones = [panel.querySelector(".grab"), panel.querySelector("h2")].filter(Boolean);
+    const mobile = () => matchMedia("(max-width:639px)").matches;
+    let startY = 0, dy = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
+    const down = e => {
+      if (!mobile() || e.button > 0) return;
+      dragging = true; startY = lastY = e.clientY; lastT = performance.now(); dy = 0; vel = 0;
+      panel.style.transition = "none";
+      e.currentTarget.setPointerCapture(e.pointerId);
+    };
+    const move = e => {
+      if (!dragging) return;
+      const now = performance.now();
+      vel = (e.clientY - lastY) / Math.max(1, now - lastT); lastY = e.clientY; lastT = now;
+      dy = Math.max(0, e.clientY - startY);
+      panel.style.transform = `translateY(${dy}px)`;
+    };
+    const up = () => {
+      if (!dragging) return;
+      dragging = false;
+      if (performance.now() - lastT > 100) vel = 0;   // 멈췄다가 놓으면 튕김 없음
+      panel.style.transition = "transform .24s cubic-bezier(.2,.8,.2,1)";
+      if (dy > Math.min(140, panel.offsetHeight * 0.3) || vel > 0.6) {
+        panel.style.transform = "translateY(100%)";
+        setTimeout(() => { dlg.close(); panel.style.transition = ""; panel.style.transform = ""; }, 230);
+      } else {
+        panel.style.transform = "";
+        setTimeout(() => { panel.style.transition = ""; }, 250);
+      }
+    };
+    zones.forEach(z => {
+      z.addEventListener("pointerdown", down);
+      z.addEventListener("pointermove", move);
+      z.addEventListener("pointerup", up);
+      z.addEventListener("pointercancel", up);
+    });
+  }
+  enableSheetDrag($("sheet"));
+  enableSheetDrag($("settings"));
 
   /* ---------- 부기 ---------- */
   let lastLine = -1, bubbleT;
