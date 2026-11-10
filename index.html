@@ -50,13 +50,13 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:3px solid var(--accent-soft);outline-offset:1px;box-shadow:0 0 0 1px var(--accent);border-radius:12px}
 
 .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 140px}
-.gnb{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(0,0,0,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);color:#F5F5F7}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:rgba(0,0,0,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.gnb{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);color:rgba(255,255,255,.8)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:rgba(29,29,31,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
 .gnb-in{max-width:1080px;margin:0 auto;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand-logo{height:26px;width:auto;flex:none;display:block}
+.brand-logo{height:26px;width:auto;flex:none;display:block;opacity:.8}
 .gnb-title{margin:0;font-size:19px;font-weight:600;letter-spacing:-.022em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.gnb .icon-btn{background:transparent;color:#F5F5F7;height:34px;min-width:34px;font-size:13.5px}
+.gnb .icon-btn{background:transparent;color:rgba(255,255,255,.8);height:34px;min-width:34px;font-size:13.5px}
 .gnb .icon-btn:hover{background:rgba(255,255,255,.14)}
 .trip-sub{color:var(--ink-2);margin:0 0 24px;font-size:15px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
 .trip-sub .who{color:var(--ink);font-weight:500}
@@ -75,7 +75,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .sync.ok i{background:var(--good)} .sync.warn i{background:var(--bad)}
 
 .grid{display:grid;gap:24px}
-@media (min-width:900px){ .grid{grid-template-columns:400px 1fr;gap:40px;align-items:start} .side{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))} }
+@media (min-width:900px){ .grid{grid-template-columns:400px minmax(0,1fr);gap:40px;align-items:start} .side{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))} }
 
 .tile{background:var(--tile);border-radius:22px;padding:28px 24px}
 .settle.tile{padding:20px}
@@ -132,9 +132,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .sw{width:8px;height:8px;border-radius:50%;flex:none}
 
 /* date segmented control */
-.tabs{display:flex;gap:2px;overflow-x:auto;padding:3px;background:var(--tile);border-radius:12px;scrollbar-width:none;width:max-content;max-width:100%}
+.grid>*{min-width:0}
+.tabs-wrap{position:relative;max-width:100%;width:max-content}
+.tabs-wrap::before,.tabs-wrap::after{content:"";position:absolute;top:0;bottom:0;width:28px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:1}
+.tabs-wrap::before{left:0;border-radius:12px 0 0 12px;background:linear-gradient(90deg,var(--tile),transparent)}
+.tabs-wrap::after{right:0;border-radius:0 12px 12px 0;background:linear-gradient(270deg,var(--tile),transparent)}
+.tabs-wrap.more-l::before,.tabs-wrap.more-r::after{opacity:1}
+.tabs{display:flex;gap:2px;overflow-x:auto;padding:3px;background:var(--tile);border-radius:12px;scrollbar-width:none;scroll-behavior:smooth;overscroll-behavior-x:contain}
 .tabs::-webkit-scrollbar{display:none}
-.tab{border:0;background:transparent;border-radius:9px;padding:7px 16px;white-space:nowrap;font-size:14px;font-weight:500;color:var(--ink)}
+.tab{border:0;background:transparent;border-radius:9px;padding:7px 14px;flex:none;white-space:nowrap;font-size:14px;font-weight:500;color:var(--ink)}
 .tab[aria-pressed="true"]{background:var(--seg-on);box-shadow:var(--thumb);font-weight:600}
 .day{margin-top:32px}
 .day-h{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 10px}
@@ -180,20 +186,26 @@ dialog::backdrop{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);ba
 @media (prefers-reduced-motion:no-preference){ dialog[open] .sheet{animation:up .28s cubic-bezier(.2,.8,.2,1)} }
 @keyframes up{from{translate:0 28px;opacity:.5}to{translate:0 0;opacity:1}}
 .grab{width:36px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.sheet h2:focus,.sheet h2:focus-visible{outline:none;box-shadow:none}
 .sheet h2{font-size:26px;margin:0 0 22px}
 .field{margin-bottom:18px}
 .field>label,.field>.lbl{display:block;font-size:13px;color:var(--ink-2);margin-bottom:7px;font-weight:500}
-.inp{width:100%;border:0;background:var(--field);border-radius:12px;padding:12px 14px;font-size:16px}
+.inp{width:100%;min-width:0;height:48px;border:0;background:var(--field);border-radius:12px;padding:0 14px;font-size:16px;display:block}
+input[type="date"].inp{-webkit-appearance:none;appearance:none;line-height:48px;text-align:left}
+input[type="date"].inp::-webkit-date-and-time-value{text-align:left}
+.two>*{min-width:0}
+.rate-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+@media (max-width:520px){ #expenseFields .two{grid-template-columns:1fr;gap:0} }
 .inp:focus{outline:none;box-shadow:0 0 0 3px var(--accent-soft),0 0 0 1px var(--accent)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .amount-wrap{position:relative}
-.amount-wrap .inp{padding-right:38px;font-size:22px;font-weight:600;letter-spacing:-.022em}
+.amount-wrap .inp{padding-right:38px;font-size:20px;font-weight:600;letter-spacing:-.022em}
 .amount-wrap span{position:absolute;right:14px;top:50%;translate:0 -50%;color:var(--ink-2)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:0;background:var(--field);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:500}
+.chip{border:0;background:var(--field);border-radius:999px;height:36px;padding:0 14px;font-size:14px;font-weight:500}
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;background:var(--field);border-radius:12px;padding:3px}
-.seg button{border:0;background:transparent;border-radius:9px;padding:9px 8px;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px}
+.seg button{border:0;background:transparent;border-radius:9px;height:42px;padding:0 8px;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px}
 .seg button[aria-pressed="true"]{background:var(--seg-on);box-shadow:var(--thumb);font-weight:600}
 .preview{background:var(--accent-soft);border-radius:12px;padding:13px 16px;font-size:14.5px;margin:6px 0 20px}
 .preview b{font-weight:600}
@@ -257,7 +269,7 @@ dialog::backdrop{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);ba
     </div>
 
     <main>
-      <div class="tabs" id="tabs" role="toolbar" aria-label="날짜 선택"></div>
+      <div class="tabs-wrap" id="tabsWrap"><div class="tabs" id="tabs" role="toolbar" aria-label="날짜 선택"></div></div>
       <div id="list"></div>
     </main>
   </div>
@@ -272,12 +284,12 @@ dialog::backdrop{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);ba
 <dialog id="sheet" aria-labelledby="sheetTitle">
   <form class="sheet" id="form" method="dialog" novalidate>
     <div class="grab"></div>
-    <h2 class="display" id="sheetTitle">지출 추가</h2>
+    <h2 class="display" id="sheetTitle" tabindex="-1" autofocus style="outline:none">지출 추가</h2>
 
     <div id="expenseFields">
       <div class="two">
-        <div class="field"><label for="fDate">날짜</label><input class="inp" type="date" id="fDate" required></div>
         <div class="field"><label for="fTitle">어디서</label><input class="inp" id="fTitle" placeholder="예: 돼지국밥" autocomplete="off" maxlength="40"></div>
+        <div class="field"><label for="fDate">날짜</label><input class="inp" type="date" id="fDate" required></div>
       </div>
       <div class="field"><span class="lbl">분류</span><div class="chips" id="fCat"></div></div>
     </div>
@@ -289,9 +301,9 @@ dialog::backdrop{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);ba
 
     <div class="field" id="rateField">
       <label for="fRate">할인율 (동백전, 카드 할인 등)</label>
-      <div class="two" style="align-items:center">
+      <div class="rate-row">
         <div class="amount-wrap"><input class="inp num" id="fRate" inputmode="decimal" placeholder="0" style="font-size:16px;font-weight:500"><span>%</span></div>
-        <div class="chips" id="rateChips"></div>
+        <div class="chips" id="rateChips" style="flex-wrap:nowrap"></div>
       </div>
     </div>
 
@@ -460,8 +472,13 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
     // tabs
     if (state.day !== "all" && !dates.includes(state.day)) state.day = "all";
     $("tabs").innerHTML = [`<button class="tab" data-d="all" aria-pressed="${state.day==="all"}">전체</button>`]
-      .concat(dates.map(d => `<button class="tab" data-d="${d}" aria-pressed="${state.day===d}">${dayLabel(d,false)}</button>`)).join("");
+      .concat(dates.map(d => { const [,m,dd] = d.split("-").map(Number); const multiMonth = dates[0].slice(0,7) !== dates[dates.length-1].slice(0,7);
+        const wk = "일월화수목금토"[new Date(d + "T00:00").getDay()];
+        return `<button class="tab" data-d="${d}" aria-pressed="${state.day===d}" aria-label="${dayLabel(d)}">${multiMonth ? m + "/" + dd : dd + "일"} <span style="color:var(--ink-2);font-weight:400">${wk}</span></button>`; })).join("");
     $("tabs").querySelectorAll(".tab").forEach(b => b.onclick = () => { state.day = b.dataset.d; render(); });
+    const tb = $("tabs"), on = tb.querySelector('[aria-pressed="true"]');
+    if (on && (on.offsetLeft < tb.scrollLeft || on.offsetLeft + on.offsetWidth > tb.scrollLeft + tb.clientWidth)) tb.scrollLeft = on.offsetLeft - tb.clientWidth/2 + on.offsetWidth/2;
+    updateTabFade();
 
     // list
     const shown = state.expenses.filter(e => state.day === "all" || e.date === state.day)
@@ -503,6 +520,14 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
       <span class="s">${bits.join("")}${Number(e.rate) ? `<span>할인 ${esc(e.rate)}%</span>` : ""}</span></span><span class="amt">${amt}</span></button>`;
   }
 
+  function updateTabFade() {
+    const tb = $("tabs"), w = $("tabsWrap");
+    w.classList.toggle("more-l", tb.scrollLeft > 4);
+    w.classList.toggle("more-r", tb.scrollLeft + tb.clientWidth < tb.scrollWidth - 4);
+  }
+  $("tabs").addEventListener("scroll", updateTabFade, {passive: true});
+  window.addEventListener("resize", updateTabFade);
+
   /* ---------- sheet ---------- */
   let draft = null, editingId = null, delArmed = false;
   const sheet = $("sheet");
@@ -524,7 +549,7 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
     $("payerLabel").textContent = isX ? "누가 보냈나" : "누가 결제했나";
     $("fCat").innerHTML = CATS.map(c => `<button type="button" class="chip" data-v="${c.k}" aria-pressed="${draft.cat===c.k}">${c.e} ${c.k}</button>`).join("");
     $("fCat").querySelectorAll(".chip").forEach(b => b.onclick = () => { draft.cat = b.dataset.v; paintSheet(); });
-    $("rateChips").innerHTML = [0,7,8,10].map(r => `<button type="button" class="chip" data-v="${r}" aria-pressed="${(Number(draft.rate)||0)===r}">${r ? r+"%" : "없음"}</button>`).join("");
+    $("rateChips").innerHTML = [0,8,10].map(r => `<button type="button" class="chip" data-v="${r}" aria-pressed="${(Number(draft.rate)||0)===r}">${r ? r+"%" : "없음"}</button>`).join("");
     $("rateChips").querySelectorAll(".chip").forEach(b => b.onclick = () => { draft.rate = Number(b.dataset.v); $("fRate").value = draft.rate || ""; paintSheet(); });
     segButtons($("fPayer"), draft.payer, v => { draft.payer = v; if (isX) draft.owner = 1 - v; paintSheet(); });
     $("fSplit").querySelectorAll("button").forEach(b => { b.setAttribute("aria-pressed", draft.split === b.dataset.v); b.onclick = () => { draft.split = b.dataset.v; paintSheet(); }; });
@@ -563,7 +588,7 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
     $("saveBtn").disabled = false;
     paintSheet();
     sheet.showModal();
-    if (!e && draft.kind !== "transfer") setTimeout(() => $("fTitle").focus(), 50);
+    if (!e && draft.kind !== "transfer") setTimeout(() => { if (matchMedia("(pointer:fine)").matches) $("fTitle").focus(); else $("sheetTitle").focus(); }, 50);
   }
   $("fDate").oninput = ev => draft.date = ev.target.value;
   $("fTitle").oninput = ev => draft.title = ev.target.value;
