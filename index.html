@@ -11,9 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dwarf Busan">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1D1D1F">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
 :root{
@@ -66,9 +64,11 @@ body{padding-top:calc(52px + env(safe-area-inset-top,0px))}
 :root{--app-top-extra:24px}
 @media (display-mode: standalone){
   .gnb{padding-top:calc(env(safe-area-inset-top,0px) + var(--app-top-extra));background:#1D1D1F;-webkit-backdrop-filter:none;backdrop-filter:none}
-  body{padding-top:calc(52px + env(safe-area-inset-top,0px) + var(--app-top-extra));min-height:100vh}
-  html{background:#1D1D1F}
+  body{padding-top:calc(52px + env(safe-area-inset-top,0px) + var(--app-top-extra))}
+  .status-tint{display:block}
 }
+/* iOS 홈 앱: 맨 위 4px 안에 있는 폭 80% 이상·높이 6px 이상의 고정 단색 요소 색을 상태 표시줄 색으로 씀 */
+.status-tint{display:none;position:fixed;top:0;left:0;right:0;height:max(8px,env(safe-area-inset-top,0px));background:#1D1D1F;z-index:31;pointer-events:none}
 .gnb-in{max-width:1080px;margin:0 auto;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{height:26px;width:auto;flex:none;display:block;opacity:.8}
@@ -243,6 +243,7 @@ input[type="date"].inp::-webkit-date-and-time-value{text-align:left}
 </style>
 </head>
 <body>
+<div class="status-tint" aria-hidden="true"></div>
 <nav class="gnb" aria-label="여행">
   <div class="gnb-in">
     <div class="brand"><img class="brand-logo" src="data:image/png;base64,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" alt=""><h1 class="gnb-title" id="tripTitle">Dwarf in Busan</h1></div>
