@@ -13,6 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="Dwarf Busan">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1D1D1F">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
 :root{
@@ -62,10 +63,11 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 /* 홈 화면 앱: iOS가 맨 위 가장자리를 흐리게 처리해서, 로고·글자를 흐림 영역 아래로 내림 */
 body{padding-top:calc(52px + env(safe-area-inset-top,0px))}
 /* 홈 화면 앱 상단 여백: 이 숫자 하나만 바꾸면 돼요 */
-:root{--app-top-extra:10px}
+:root{--app-top-extra:24px}
 @media (display-mode: standalone){
   .gnb{padding-top:calc(env(safe-area-inset-top,0px) + var(--app-top-extra));background:#1D1D1F;-webkit-backdrop-filter:none;backdrop-filter:none}
-  body{padding-top:calc(52px + env(safe-area-inset-top,0px) + var(--app-top-extra))}
+  body{padding-top:calc(52px + env(safe-area-inset-top,0px) + var(--app-top-extra));min-height:100vh}
+  html{background:#1D1D1F}
 }
 .gnb-in{max-width:1080px;margin:0 auto;height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
