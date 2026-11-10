@@ -62,7 +62,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 /* 홈 화면 앱: iOS가 맨 위 가장자리를 흐리게 처리해서, 로고·글자를 흐림 영역 아래로 내림 */
 body{padding-top:calc(52px + env(safe-area-inset-top,0px))}
 /* 홈 화면 앱 상단 여백: 이 숫자 하나만 바꾸면 돼요 */
-:root{--app-top-extra:15px}
+:root{--app-top-extra:5px}
 @media (display-mode: standalone){
   .gnb{padding-top:calc(env(safe-area-inset-top,0px) + var(--app-top-extra))}
   body{padding-top:calc(52px + env(safe-area-inset-top,0px) + var(--app-top-extra))}
