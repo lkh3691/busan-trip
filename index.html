@@ -3,14 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dwarf in Busan 정산</title>
+<title>DwarfSplit</title>
 <meta name="robots" content="noindex">
+<!-- SNS 미리보기: 아래 두 줄의 주소를 내 GitHub Pages 주소로 바꿔주세요 -->
+<meta property="og:url" content="https://아이디.github.io/busan-trip/">
+<meta property="og:image" content="https://아이디.github.io/busan-trip/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DwarfSplit">
+<meta property="og:title" content="DwarfSplit">
+<meta property="og:description" content="Less Counting. More Exploring. 여행 경비를 함께 기록하고 정산해요.">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Dwarf Busan">
+<meta name="apple-mobile-web-app-title" content="DwarfSplit">
 <meta name="theme-color" content="#1D1D1F">
 
 <style>
@@ -437,7 +447,7 @@ let initializeApp, getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot,
   function render() {
     const P = state.settings.people;
     const s = compute();
-    document.title = `${state.settings.title} 정산`;
+    document.title = "DwarfSplit";
     $("tripTitle").textContent = state.settings.title;
 
     const dates = [...new Set(state.expenses.map(e => e.date).filter(Boolean))].sort();
